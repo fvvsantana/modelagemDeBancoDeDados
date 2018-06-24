@@ -23,26 +23,31 @@ def fillMenu(menu, contentContainer):
         text="Locais",
         anchor='w',
         command=buttonFunction,
+        relief=tk.RIDGE,
         font='Helvetica 12').grid(row=3, sticky='nsew')
     tk.Button(menu,
         text="Formaturas",
         anchor='w',
         command=buttonFunction,
+        relief=tk.RIDGE,
         font='Helvetica 12').grid(row=4, sticky='nsew')
     tk.Button(menu,
         text="Funcionários",
         anchor='w',
         command=buttonFunction,
+        relief=tk.RIDGE,
         font='Helvetica 12').grid(row=5, sticky='nsew')
     tk.Button(menu,
         text="Clientes",
         anchor='w',
         command=lambda: content.showClient(contentContainer),
+        relief=tk.RIDGE,
         font='Helvetica 12').grid(row=6, sticky='nsew')
     tk.Button(menu,
         text="Contratos",
         anchor='w',
         command=buttonFunction,
+        relief=tk.RIDGE,
         font='Helvetica 12').grid(row=7, sticky='nsew')
     tk.Label(menu,
         pady='5',
@@ -54,4 +59,5 @@ def fillMenu(menu, contentContainer):
         text="Exemplo",
         anchor='w',
         command=buttonFunction,
+        relief=tk.RIDGE,
         font='Helvetica 12').grid(row=9, sticky='nsew')
