@@ -1,0 +1,1 @@
+1) Documentar a inserção do campo "Data" na tabela "Contrato". Isto foi feito para que se pudesse pesquisar sobre o valor total gasto por um cliente em festas.
