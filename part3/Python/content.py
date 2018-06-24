@@ -66,12 +66,15 @@ def addClient(content):
     telefone.grid(row=4, column=1, pady=3, padx=3, stick='nsew')
 
     def save():
-        # SQL PARA ADICIONAR AQUI
-        # LEMBRA DO COMMIT
-        print(codigo.get())
-        print(natureza.get())
-        print(email.get())
-        print(telefone.get())
+        server.cur.prepare("insert into CLIENTE(CODIGO, NATUREZA, EMAIL, TELEFONE) VALUES(:1, :2, :3, :4)")
+
+        cod = codigo.get()
+        nat = natureza.get()
+        em = email.get()
+        tel = telefone.get()
+
+        server.cur.execute(None, {'1':cod, '2':nat, '3':em, '4':tel})
+        server.con.commit()
 
     # add the button
     tk.Button(content, text="Concluir", command=save, relief=tk.RIDGE, pady=3, padx=50, bg='green', fg='white', font='Helvetica 11 bold', cursor='hand2').grid(row=5, column=0, columnspan=2, pady=5)
