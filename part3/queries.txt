@@ -4,7 +4,7 @@
 
 3) Para cada tipo de funcionário, calcular a média salarial e a quantidade de empregados. Ordenar decrescentemente pela média salarial.
 
-4) Para cada vendedor, listar a quantidade de vendas executadas no último mês e o preço total das festas vendidas. Ordenar decrescentemente por preço.
+4) Para cada vendedor, listar a quantidade de vendas executadas nos últimos 30 dias e o preço total das festas vendidas. Ordenar decrescentemente por preço.
 
 5) Para cada supervisor, listar a quantidade de festas supervisionadas no último mês e a duração total das festas.
 
