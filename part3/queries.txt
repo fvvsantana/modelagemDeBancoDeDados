@@ -10,3 +10,4 @@
 
 6) Mostrar o total gasto com salários, o total arrecadado com festas e o total arrecadado com a venda de convites no mês.
 
+7) Para cada local, listar a quantidade e o preço total das festas que lá ocorreram no último mês. Ordenar decrescentemente pelo preço total.
