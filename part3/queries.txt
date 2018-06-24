@@ -6,8 +6,8 @@
 
 4) Para cada vendedor, listar a quantidade de vendas executadas nos últimos 30 dias e o preço total das festas vendidas. Ordenar decrescentemente por preço.
 
-5) Para cada supervisor, listar a quantidade de festas supervisionadas no último mês e a duração total das festas.
+5) Para cada supervisor, listar a quantidade de festas supervisionadas nos últimos 30 dias e a duração total das festas. Ordenar decrescentemente por duração total.
 
-6) Mostrar o total gasto com salários, o total arrecadado com festas e o total arrecadado com a venda de convites no mês.
+6) Mostrar o total gasto com salários e o total arrecadado com festas nos últimos 30 dias.
 
-7) Para cada local, listar a quantidade e o preço total das festas que lá ocorreram no último mês. Ordenar decrescentemente pelo preço total.
+7) Para cada local, listar a quantidade e o preço total das festas que lá ocorreram nos últimos 30 dias. Ordenar decrescentemente pelo preço total.
