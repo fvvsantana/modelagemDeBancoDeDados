@@ -12,52 +12,52 @@ def fillMenu(menu, contentContainer):
         text="Menu",
         fg='white',
         bg='deepskyblue',
-        font='Helvetica 14 bold').grid(row=0, sticky='nsew')
+        font='Helvetica 14 bold').pack(fill=tk.X)
     tk.Label(menu,
         pady='5',
         anchor='w',
         text="Dados",
         bg='lightskyblue',
-        font='Helvetica 12 bold').grid(row=1, sticky='nsew')
+        font='Helvetica 12 bold').pack(fill=tk.X)
     tk.Button(menu,
         text="Locais",
         anchor='w',
         command=buttonFunction,
         relief=tk.RIDGE,
-        font='Helvetica 12').grid(row=3, sticky='nsew')
+        font='Helvetica 12').pack(fill=tk.X)
     tk.Button(menu,
         text="Formaturas",
         anchor='w',
         command=buttonFunction,
         relief=tk.RIDGE,
-        font='Helvetica 12').grid(row=4, sticky='nsew')
+        font='Helvetica 12').pack(fill=tk.X)
     tk.Button(menu,
         text="Funcionários",
         anchor='w',
         command=buttonFunction,
         relief=tk.RIDGE,
-        font='Helvetica 12').grid(row=5, sticky='nsew')
+        font='Helvetica 12').pack(fill=tk.X)
     tk.Button(menu,
         text="Clientes",
         anchor='w',
         command=lambda: content.showClient(contentContainer),
         relief=tk.RIDGE,
-        font='Helvetica 12').grid(row=6, sticky='nsew')
+        font='Helvetica 12').pack(fill=tk.X)
     tk.Button(menu,
         text="Contratos",
         anchor='w',
         command=buttonFunction,
         relief=tk.RIDGE,
-        font='Helvetica 12').grid(row=7, sticky='nsew')
+        font='Helvetica 12').pack(fill=tk.X)
     tk.Label(menu,
         pady='5',
         anchor='w',
         text="Consultas",
         bg='lightskyblue',
-        font='Helvetica 12 bold').grid(row=8, sticky='nsew')
+        font='Helvetica 12 bold').pack(fill=tk.X)
     tk.Button(menu,
         text="Exemplo",
         anchor='w',
         command=buttonFunction,
         relief=tk.RIDGE,
-        font='Helvetica 12').grid(row=9, sticky='nsew')
+        font='Helvetica 12').pack(fill=tk.X)
