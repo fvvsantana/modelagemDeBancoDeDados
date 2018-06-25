@@ -85,6 +85,7 @@ def addClient(content):
         server.cur.execute(None, {'1':cod, '2':nat, '3':em, '4':tel})
         server.con.commit()
 
+        # update Client list table
         showClient(content)
 
     # add the confirm button
@@ -101,6 +102,7 @@ def removeClient(content, client):
     server.cur.execute(None, {'1':cod})
     server.con.commit()
 
+    # update Client list table
     showClient(content)
 
 def editClient(content, client):
@@ -115,7 +117,7 @@ def editClient(content, client):
 
     # add the content
     tk.Label(content, text="Código:", font='Helvetica 11').grid(row=1, column=0, pady=3, sticky='w')
-    codigo = tk.Entry(content)
+    codigo = tk.Entry(content, state='disabled')
     codigo.insert(0, client[0])
     codigo.grid(row=1, column=1, pady=3, padx=3, stick='nsew')
 
@@ -139,7 +141,7 @@ def editClient(content, client):
         server.cur.prepare("update CLIENTE set NATUREZA = :2, EMAIL = :3, TELEFONE = :4 where CODIGO = :1")
 
         # get data about the Client from the user
-        cod = codigo.get()
+        cod = client[0]
         nat = natureza.get()
         em = email.get()
         tel = telefone.get()
@@ -148,6 +150,7 @@ def editClient(content, client):
         server.cur.execute(None, {'1':cod, '2':nat, '3':em, '4':tel})
         server.con.commit()
 
+        # update Client list table
         showClient(content)
 
     # add the confirm button

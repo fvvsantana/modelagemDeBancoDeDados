@@ -1,5 +1,7 @@
 import tkinter as tk
-import content
+import client
+import local
+import employee
 import query1
 import query2
 import query3
@@ -26,7 +28,7 @@ def fillMenu(menu, contentContainer):
     tk.Button(menu,
         text="Locais",
         anchor='w',
-        command=buttonFunction,
+        command=lambda: local.showLocal(contentContainer),
         cursor='hand2',
         relief=tk.RIDGE,
         font='Helvetica 12').pack(fill=tk.X)
@@ -40,14 +42,14 @@ def fillMenu(menu, contentContainer):
     tk.Button(menu,
         text="Funcionários",
         anchor='w',
-        command=buttonFunction,
+        command=lambda: employee.showEmployee(contentContainer),
         cursor='hand2',
         relief=tk.RIDGE,
         font='Helvetica 12').pack(fill=tk.X)
     tk.Button(menu,
         text="Clientes",
         anchor='w',
-        command=lambda: content.showClient(contentContainer),
+        command=lambda: client.showClient(contentContainer),
         cursor='hand2',
         relief=tk.RIDGE,
         font='Helvetica 12').pack(fill=tk.X)
@@ -85,25 +87,3 @@ def fillMenu(menu, contentContainer):
         cursor='hand2',
         relief=tk.RIDGE,
         font='Helvetica 12').pack(fill=tk.X)
-    tk.Button(menu,
-        text="Consulta 2",
-        anchor='w',
-        command=lambda: query2.showQuery2(contentContainer),
-        cursor='hand2',
-        relief=tk.RIDGE,
-        font='Helvetica 12').pack(fill=tk.X)
-    tk.Button(menu,
-        text="Consulta 3",
-        anchor='w',
-        command=lambda: query3.showQuery3(contentContainer),
-        cursor='hand2',
-        relief=tk.RIDGE,
-        font='Helvetica 12').pack(fill=tk.X)
-    tk.Button(menu,
-        text="Consulta 4",
-        anchor='w',
-        command=lambda: query4.showQuery4(contentContainer),
-        cursor='hand2',
-        relief=tk.RIDGE,
-        font='Helvetica 12').pack(fill=tk.X)
-
