@@ -1,3 +1,6 @@
+/*Tabela de cliente
+    - A chave primaria é um número para melhorar a eficiência das buscas 
+    - CK_NATUREZA garante que o cliente sempre será físico ou jurídico*/
 CREATE TABLE CLIENTE (
     CODIGO NUMBER(10) NOT NULL,
     NATUREZA VARCHAR2(8) NOT NULL,
@@ -8,6 +11,8 @@ CREATE TABLE CLIENTE (
     CONSTRAINT CK_NATUREZA CHECK(UPPER(NATUREZA) IN ('FISICO', 'JURIDICO'))   
 );
 
+/*Tabela de cliente físico
+    - O CPF deve ficar no formato real (com pontos e traço) ao invés de somente números*/
 CREATE TABLE CLIENTE_FISICO (
     NOME VARCHAR2(50) NOT NULL,
     CPF CHAR(14) NOT NULL,
@@ -20,6 +25,8 @@ CREATE TABLE CLIENTE_FISICO (
         REFERENCES CLIENTE(CODIGO) ON DELETE CASCADE
 );
 
+/*Tabela de representante do cliente jurídico
+    - O CPF deve ficar no formato real (com pontos e traço) ao invés de somente números */
 CREATE TABLE REPRESENTANTE (
     CPF CHAR(14) NOT NULL, 
     NOME VARCHAR2(50) NOT NULL,
@@ -28,6 +35,7 @@ CREATE TABLE REPRESENTANTE (
     CONSTRAINT PK_REPRESENTANTE PRIMARY KEY(CPF)
 );
 
+/*Tabela de cliente jurídico*/
 CREATE TABLE CLIENTE_JURIDICO (
     /*FORMATO DE CNPJ XX.XXX.XXX/YYYY-ZZ */
     CNPJ CHAR(18) NOT NULL,
@@ -45,6 +53,7 @@ CREATE TABLE CLIENTE_JURIDICO (
         REFERENCES REPRESENTANTE(CPF) ON DELETE CASCADE
 );
 
+/*Tabela com os formandos*/
 CREATE TABLE FORMANDO (
     CPF CHAR(14) NOT NULL, 
     NOME VARCHAR2(50) NOT NULL,
@@ -53,6 +62,8 @@ CREATE TABLE FORMANDO (
     CONSTRAINT PK_FORMANDO PRIMARY KEY(CPF)   
 );
 
+/*Tabela dos funcionarios
+    - os dados bancários (banco, agencia e numero) foram mantidos como tipo number para se adaptar a suas diferentes formatações*/
 CREATE TABLE FUNCIONARIO (
     CPF CHAR(14) NOT NULL, 
     NOME VARCHAR2(50) NOT NULL,
@@ -60,8 +71,6 @@ CREATE TABLE FUNCIONARIO (
     TELEFONE NUMBER(11),
     SALARIO NUMBER(10 , 2),
     BANCO NUMBER(3),
-    /* Nï¿½O SEI SE EXISTE UM PADRï¿½O PARA AGENCIA E NUMERO DE CONTA ENTAO COLOQUEI COMO NUMERO POR ENQUANTO
-       SE HOUVER PADRï¿½O DE FORMATO PODE SER FEITO COMO OS CPFS*/
     AGENCIA NUMBER(8),  
     NUMERO NUMBER(10),
     ENDERECO VARCHAR2(70),
@@ -71,6 +80,7 @@ CREATE TABLE FUNCIONARIO (
     CONSTRAINT CK_CPF_FUNCIONARIO CHECK(REGEXP_LIKE(CPF, '[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}'))    
 );
 
+/*Tabela com os funcionátios do tipo Supervisor*/
 CREATE TABLE SUPERVISOR (
     CPF CHAR(14) NOT NULL,
     
@@ -79,6 +89,7 @@ CREATE TABLE SUPERVISOR (
         REFERENCES FUNCIONARIO(CPF) ON DELETE CASCADE
 );
 
+/*Tabela com os funcionários do tipo Vendedor*/
 CREATE TABLE VENDEDOR (
     CPF CHAR(14) NOT NULL,
     
@@ -87,6 +98,9 @@ CREATE TABLE VENDEDOR (
         REFERENCES FUNCIONARIO(CPF) ON DELETE CASCADE
 );
 
+/*Tabela com os locais de festa
+    - Consideramos que CEP + número  do local servem como chave primária
+    - O CEP é armazenado no formato XXXXX-XXX*/
 CREATE TABLE LOCAL (
     CEP CHAR(9) NOT NULL,
     NUMERO NUMBER(5) NOT NULL,
@@ -99,6 +113,8 @@ CREATE TABLE LOCAL (
     CONSTRAINT CK_CEP_LOCAL CHECK(REGEXP_LIKE(CEP, '[0-9]{5}\-[0-9]{3}'))
 );
 
+/*Tabela comas fotos dos locais
+    - Foi decidido armazenar somente o caminho das fotos ao invés de utilizar blobs, assim garantindo maior eficiência ao banco, pois os blobs ocupariam muito espaço*/
 CREATE TABLE FOTO (
     CEP CHAR(9) NOT NULL,
     NUMERO NUMBER(5) NOT NULL,
@@ -110,14 +126,17 @@ CREATE TABLE FOTO (
         REFERENCES LOCAL(CEP, NUMERO) ON DELETE CASCADE   
 );
 
+/*Tabela com as festas
+    - Foi decidido criar um codigo numérico para cada festa para garantir eficiência ao banco
+    - A nota fiscal do local também é identificadora da festa
+    - CEP + Número do local + data e hora da festa também identificam uma festa
+    - Duração está como number pois armazena os minutos*/
 CREATE TABLE FESTA(
     CEP CHAR(9) NOT NULL,
     NUMERO NUMBER(5) NOT NULL,
-    /* O ORACLE ARMAZENA DATA E HORA JUNTOS, NAO PRECISAMOS SEPARAR OS CAMPOS */
     DATA_HORA DATE NOT NULL,
     TIPO VARCHAR2(11),
     NRO_CONVIDADOS NUMBER(5),
-    /* COLOQUEI DURACAO COMO NUMBER PARA ARMAZENAR OS MINUTOS, TALVEZ SEJA MELHOR PARA FAZER ALGUMAS OPERACOES EM APLICACAO*/
     DURACAO NUMBER(4),
     /* PORCENTAGEM DE LUCRO QUE A ASSESSORIA OBTÃ‰M DE UMA DETERMINADA FESTA */
     LUCRO NUMBER(5, 2),
@@ -132,6 +151,7 @@ CREATE TABLE FESTA(
         REFERENCES LOCAL(CEP, NUMERO) ON DELETE CASCADE 
 );
 
+/*Tabela com algumas informações referentes a uma festa de aniversário infantil, como nome do aniversariante, sua idade e o tema principal da festa*/
 CREATE TABLE ANIVERSARIO(
     FESTA NUMBER(10) NOT NULL,
     NOME VARCHAR2(50),
@@ -143,6 +163,7 @@ CREATE TABLE ANIVERSARIO(
         REFERENCES FESTA(CODIGO) ON DELETE CASCADE 
 );
 
+/*Tabela com algumas informações referentes a uma festa de formatura, como o nome da escola, a turma que está se formando e o preço unitário do convite*/
 CREATE TABLE FORMATURA(
     FESTA NUMBER(10) NOT NULL,
     ESCOLA VARCHAR2(50),
@@ -155,6 +176,7 @@ CREATE TABLE FORMATURA(
         REFERENCES FESTA(CODIGO) ON DELETE CASCADE    
 );
 
+/*Tabela que associa um formando a convites que ele comprou*/
 CREATE TABLE COMPRA_CONVITE(
     FORMATURA NUMBER(10) NOT NULL,
     FORMANDO CHAR(14) NOT NULL,
@@ -169,12 +191,14 @@ CREATE TABLE COMPRA_CONVITE(
         REFERENCES FORMANDO(CPF) ON DELETE CASCADE
 );
 
+/*Tabela que indica o fechamento de negócio entre um cliente e um vendedor, estabelecendo um contrato*/
 CREATE TABLE CONTRATO (
     FESTA NUMBER(10) NOT NULL,
     VENDEDOR CHAR(14) NOT NULL,
     CLIENTE NUMBER(10) NOT NULL,
     NOTA_FISCAL VARCHAR2(30) NOT NULL,
     PRECO NUMBER(10, 2) NOT NULL,
+    DATA DATE NOT NULL,
     
     CONSTRAINT UN_CONTRATO UNIQUE(NOTA_FISCAL),
     CONSTRAINT PK_CONTRATO PRIMARY KEY(FESTA),
@@ -186,6 +210,7 @@ CREATE TABLE CONTRATO (
         REFERENCES FESTA(CODIGO) ON DELETE CASCADE    
 );
 
+/*Tabela contendo as festas em que cada supervisor trabalha*/
 CREATE TABLE SUPERVISIONA (
     SUPERVISOR CHAR(14) NOT NULL,
     FESTA NUMBER(10) NOT NULL,
@@ -197,6 +222,7 @@ CREATE TABLE SUPERVISIONA (
         REFERENCES FESTA(CODIGO) ON DELETE CASCADE
 );
 
+/*Tabela contendo todos os fornecedores e o tipo a que pertencem*/
 CREATE TABLE TIPO_FORNECEDOR(
     CNPJ CHAR(18) NOT NULL,
     TIPO_FORNECEDOR VARCHAR2(9) NOT NULL,
@@ -206,6 +232,8 @@ CREATE TABLE TIPO_FORNECEDOR(
     CONSTRAINT CK_TIPO_FORNECEDOR CHECK(UPPER(TIPO_FORNECEDOR) IN ('GERAL', 'FORMATURA', 'INFANTIL'))   
 );
 
+/*Início dos fornecedores gerais*/
+/*Tabela com as empresas que podem fornecer seus produtos ou serviços a diversos tipos de festa*/
 CREATE TABLE FORNECEDOR_GERAL(
     CNPJ CHAR(18) NOT NULL,
     NOME VARCHAR2(50) NOT NULL,
@@ -219,6 +247,7 @@ CREATE TABLE FORNECEDOR_GERAL(
         REFERENCES TIPO_FORNECEDOR(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com os fornecedores de decoração*/
 CREATE TABLE DECORACAO(
     CNPJ CHAR(18) NOT NULL,
     
@@ -227,6 +256,7 @@ CREATE TABLE DECORACAO(
         REFERENCES FORNECEDOR_GERAL(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com os temas de decoração que uma empresa fornece*/
 CREATE TABLE TEMA(
     CNPJ CHAR(18) NOT NULL,
     TEMA VARCHAR2(20) NOT NULL,
@@ -236,6 +266,7 @@ CREATE TABLE TEMA(
         REFERENCES DECORACAO(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com as empresas que oferecem serviço de buffet*/
 CREATE TABLE BUFFET(
     CNPJ CHAR(18) NOT NULL,
     
@@ -244,6 +275,7 @@ CREATE TABLE BUFFET(
         REFERENCES FORNECEDOR_GERAL(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com os pratos fornecidos por um buffet*/
 CREATE TABLE COMIDA(
     CNPJ CHAR(18) NOT NULL,
     PRATO VARCHAR2(20) NOT NULL,
@@ -253,6 +285,7 @@ CREATE TABLE COMIDA(
         REFERENCES BUFFET(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com as bebidas fornecidas por um buffet*/
 CREATE TABLE BEBIDA(
     CNPJ CHAR(18) NOT NULL,
     BEBIDA VARCHAR2(20) NOT NULL,
@@ -262,6 +295,10 @@ CREATE TABLE BEBIDA(
         REFERENCES BUFFET(CNPJ) ON DELETE CASCADE
 );
 
+/*Fim dos fornecedores gerais*/
+
+/*Início dos fornecedores de aniversário infantil*/
+/*Tabela com os fornecedores específicos para festas infantis*/
 CREATE TABLE FORNECEDOR_INFANTIL(
     CNPJ CHAR(18) NOT NULL,
     NOME VARCHAR2(50) NOT NULL,
@@ -275,6 +312,7 @@ CREATE TABLE FORNECEDOR_INFANTIL(
         REFERENCES TIPO_FORNECEDOR(CNPJ) ON DELETE CASCADE    
 );
 
+/*Tabela com os fornecedores de brinquedos*/
 CREATE TABLE FORNECEDOR_BRINQUEDOS(
     CNPJ CHAR(18) NOT NULL,
     
@@ -283,6 +321,7 @@ CREATE TABLE FORNECEDOR_BRINQUEDOS(
         REFERENCES FORNECEDOR_INFANTIL(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com os brinquedos oferecidos por um fornecedor com a idade recomendada mínima*/
 CREATE TABLE BRINQUEDO(
     CNPJ CHAR(18) NOT NULL,
     NOME VARCHAR2(50) NOT NULL,
@@ -293,6 +332,7 @@ CREATE TABLE BRINQUEDO(
         REFERENCES FORNECEDOR_BRINQUEDOS(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com os caminhos para fotos de um brinquedo*/
 CREATE TABLE FOTO_BRINQUEDO(
     CNPJ CHAR(18) NOT NULL,
     NOME VARCHAR2(50) NOT NULL,
@@ -304,6 +344,7 @@ CREATE TABLE FOTO_BRINQUEDO(
         REFERENCES BRINQUEDO(CNPJ, NOME) ON DELETE CASCADE   
 );
 
+/*Tabela com as docerias para as festas infantis*/
 CREATE TABLE DOCERIA(
     CNPJ CHAR(18) NOT NULL,
     
@@ -312,6 +353,7 @@ CREATE TABLE DOCERIA(
         REFERENCES FORNECEDOR_INFANTIL(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com os bolos oferecidos por uma doceria*/
 CREATE TABLE BOLOS(
     CNPJ CHAR(18) NOT NULL,
     SABOR VARCHAR2(50) NOT NULL,
@@ -321,6 +363,7 @@ CREATE TABLE BOLOS(
         REFERENCES DOCERIA(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com os doces oferecidos por uma doceria*/
 CREATE TABLE DOCES(
     CNPJ CHAR(18) NOT NULL,
     NOME VARCHAR2(50) NOT NULL,
@@ -330,6 +373,10 @@ CREATE TABLE DOCES(
         REFERENCES DOCERIA(CNPJ) ON DELETE CASCADE
 );
 
+/*Fim dos fornecedores infantis*/
+
+/*Inicio dos fornecedores de formatura*/
+/*Tabela com os fornecedores específicos de formaturas*/
 CREATE TABLE FORNECEDOR_FORMATURA(
     CNPJ CHAR(18) NOT NULL,
     NOME VARCHAR2(50) NOT NULL,
@@ -343,6 +390,7 @@ CREATE TABLE FORNECEDOR_FORMATURA(
         REFERENCES TIPO_FORNECEDOR(CNPJ) ON DELETE CASCADE    
 );
 
+/*Tabela com os fornecedores de bebidas*/
 CREATE TABLE BEBIDA_ALCOOLICA(
     CNPJ CHAR(18) NOT NULL,
     
@@ -351,6 +399,7 @@ CREATE TABLE BEBIDA_ALCOOLICA(
         REFERENCES FORNECEDOR_FORMATURA(CNPJ) ON DELETE CASCADE
 );
 
+/* Tabela com as marcas oferecidas por um fornecedor de bebidas*/
 CREATE TABLE MARCAS(
     CNPJ CHAR(18) NOT NULL,
     MARCA VARCHAR2(50) NOT NULL,
@@ -360,6 +409,7 @@ CREATE TABLE MARCAS(
         REFERENCES BEBIDA_ALCOOLICA(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com as bandas disponíveis para formatura*/
 CREATE TABLE BANDA(
     CNPJ CHAR(18) NOT NULL,
     
@@ -368,6 +418,7 @@ CREATE TABLE BANDA(
         REFERENCES FORNECEDOR_FORMATURA(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com os gêneros de música oferecidos por uma banda*/
 CREATE TABLE GENEROS(
     CNPJ CHAR(18) NOT NULL,
     GENERO VARCHAR2(50) NOT NULL,
@@ -377,6 +428,7 @@ CREATE TABLE GENEROS(
         REFERENCES BANDA(CNPJ) ON DELETE CASCADE
 );
 
+/*Tabela com o compromisso de um fornecedor geral com uma festa */
 CREATE TABLE FORNECE(
     FORNECEDOR_GERAL CHAR(18) NOT NULL,
     FESTA NUMBER(10) NOT NULL,
@@ -390,6 +442,7 @@ CREATE TABLE FORNECE(
         REFERENCES FESTA(CODIGO) ON DELETE CASCADE 
 );
 
+/*Tabela com o que está sendo oferecido por um fornecedor geral para uma festa*/
 CREATE TABLE ITEM_FORNECE(
     FORNECEDOR_GERAL CHAR(18) NOT NULL,
     FESTA NUMBER(10) NOT NULL,
@@ -404,6 +457,7 @@ CREATE TABLE ITEM_FORNECE(
         REFERENCES FORNECE(FORNECEDOR_GERAL, FESTA) ON DELETE CASCADE 
 );
 
+/*Tabela com o compromisso de um fornecedor infantil com uma festa de aniversário */
 CREATE TABLE ANIMA_ANIVERSARIO(
     ANIVERSARIO NUMBER(10) NOT NULL,
     ATRACAO_INFANTIL CHAR(18) NOT NULL,
@@ -417,6 +471,7 @@ CREATE TABLE ANIMA_ANIVERSARIO(
         REFERENCES ANIVERSARIO(FESTA) ON DELETE CASCADE   
 );
 
+/*Tabela com o que está sendo oferecido por um fornecedor infantil para uma festa de aniversário*/
 CREATE TABLE ITEM_ANIVERSARIO(
     ANIVERSARIO NUMBER(10) NOT NULL, 
     ATRACAO_INFANTIL CHAR(18) NOT NULL,
@@ -431,6 +486,7 @@ CREATE TABLE ITEM_ANIVERSARIO(
         REFERENCES ANIMA_ANIVERSARIO(ANIVERSARIO, ATRACAO_INFANTIL) ON DELETE CASCADE 
 );
 
+/*Tabela com o compromisso de um fornecedor de formatura com uma festa de formatura */
 CREATE TABLE ANIMA_FORMATURA(
     FORMATURA NUMBER(10) NOT NULL,
     ATRACAO_FORMATURA CHAR(18) NOT NULL,
@@ -444,6 +500,7 @@ CREATE TABLE ANIMA_FORMATURA(
         REFERENCES FORMATURA(FESTA) ON DELETE CASCADE 
 );
 
+/*Tabela com o que está sendo oferecido por um fornecedor de formatura para uma festa de formatura*/
 CREATE TABLE ITEM_FORMATURA(
     FORMATURA NUMBER(10) NOT NULL, 
     ATRACAO_FORMATURA CHAR(18) NOT NULL,
