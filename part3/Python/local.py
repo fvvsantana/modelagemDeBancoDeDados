@@ -100,7 +100,7 @@ def addLocal(content):
         showLocal(content)
 
     # add the confirm button
-    tk.Button(content, text="Concluir", command=save, relief=tk.RIDGE, pady=3, padx=50, bg='green', fg='white', font='Helvetica 11 bold', cursor='hand2').grid(row=5, column=0, columnspan=2, pady=5)
+    tk.Button(content, text="Concluir", command=save, relief=tk.RIDGE, pady=3, padx=50, bg='green', fg='white', font='Helvetica 11 bold', cursor='hand2').grid(row=7, column=0, columnspan=2, pady=5)
 
 def removeLocal(content, local):
     # prepare the SQL Delete command
