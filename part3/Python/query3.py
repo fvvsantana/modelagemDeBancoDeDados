@@ -27,7 +27,12 @@ def showQuery3(content):
     tk.Label(content, text="Num_Empregados", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=2, sticky="nsew")
 
     # add the table content
-    server.cur.execute('SELECT CARGO, AVG(SALARIO) AS SALARIO_MEDIO, COUNT(CPF) AS NUM_EMPREGADOS FROM FUNCIONARIO GROUP BY CARGO ORDER BY AVG(SALARIO) DESC')
+    server.cur.execute(' \
+        SELECT CARGO, AVG(SALARIO) AS SALARIO_MEDIO, COUNT(CPF) AS NUM_EMPREGADOS \
+            FROM FUNCIONARIO \
+            GROUP BY CARGO \
+            ORDER BY AVG(SALARIO) DESC \
+        ')
 
     i = 3
     for result in server.cur:
