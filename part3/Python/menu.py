@@ -1,6 +1,7 @@
 import tkinter as tk
 import client
 import local
+import employee
 
 # example fuction for button press
 def buttonFunction():
@@ -37,7 +38,7 @@ def fillMenu(menu, contentContainer):
     tk.Button(menu,
         text="Funcionários",
         anchor='w',
-        command=buttonFunction,
+        command=lambda: employee.showEmployee(contentContainer),
         cursor='hand2',
         relief=tk.RIDGE,
         font='Helvetica 12').pack(fill=tk.X)
