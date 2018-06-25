@@ -1,5 +1,6 @@
 import tkinter as tk
 import content
+import query1
 
 # example fuction for button press
 def buttonFunction():
@@ -75,9 +76,10 @@ def fillMenu(menu, contentContainer):
         bg='lightskyblue',
         font='Helvetica 12 bold').pack(fill=tk.X)
     tk.Button(menu,
-        text="Exemplo",
+        text="Consulta 1",
         anchor='w',
-        command=buttonFunction,
+        command=lambda: query1.showQuery1(contentContainer),
         cursor='hand2',
         relief=tk.RIDGE,
         font='Helvetica 12').pack(fill=tk.X)
+
