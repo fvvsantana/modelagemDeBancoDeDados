@@ -1,5 +1,6 @@
 import tkinter as tk
-import content
+import client
+import local
 
 # example fuction for button press
 def buttonFunction():
@@ -22,7 +23,7 @@ def fillMenu(menu, contentContainer):
     tk.Button(menu,
         text="Locais",
         anchor='w',
-        command=buttonFunction,
+        command=lambda: local.showLocal(contentContainer),
         cursor='hand2',
         relief=tk.RIDGE,
         font='Helvetica 12').pack(fill=tk.X)
@@ -43,7 +44,7 @@ def fillMenu(menu, contentContainer):
     tk.Button(menu,
         text="Clientes",
         anchor='w',
-        command=lambda: content.showClient(contentContainer),
+        command=lambda: client.showClient(contentContainer),
         cursor='hand2',
         relief=tk.RIDGE,
         font='Helvetica 12').pack(fill=tk.X)
