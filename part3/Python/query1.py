@@ -33,7 +33,7 @@ def showQuery1(content):
             ON F.CODIGO=C.CLIENTE \
             WHERE EXTRACT(YEAR FROM C.DATA) >= EXTRACT(YEAR FROM SYSDATE) - 5 \
             GROUP BY F.CPF, F.NOME \
-            ORDER BY SUM(C.PRECO) DESC; ')
+            ORDER BY SUM(C.PRECO) DESC')
 
     i = 3
     for result in server.cur:
