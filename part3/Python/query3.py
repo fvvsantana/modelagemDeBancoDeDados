@@ -39,4 +39,5 @@ def showQuery3(content):
         for j in range(len(result)):
             tk.Grid.columnconfigure(content, j, weight=1)
             tk.Label(content, text=result[j], padx=15, pady=5, borderwidth=2, relief="ridge").grid(row=i, column=j, sticky="nsew")
+        i = i + 1
 
