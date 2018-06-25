@@ -32,14 +32,14 @@ def showClient(content):
         .grid(row=0, column=0, columnspan=content.grid_size()[0], stick='e', pady=5, padx=5)
 
     # add the table content
-    server.cur.execute('select * from CLIENTE')
+    server.cur.execute('select * from CLIENTE order by CODIGO')
     i = 2
     for result in server.cur:
         for j in range(len(result)):
             tk.Grid.columnconfigure(content, j, weight=1)
             tk.Label(content, text=result[j], padx=15, pady=5, borderwidth=2, relief="ridge").grid(row=i, column=j, sticky="nsew")
         tk.Button(content, text="Editar", padx=20, pady=5, borderwidth=2, relief="ridge", bg='lemonchiffon', cursor='hand2', command=lambda client=result:editClient(content, client)).grid(row=i, column=j+1, sticky="nsew")
-        tk.Button(content, text="Excluir", padx=20, pady=5, borderwidth=2, relief="ridge", bg='mistyrose', cursor='hand2', command=lambda client=result:removeClient(client)).grid(row=i, column=j+2, sticky="nsew")
+        tk.Button(content, text="Excluir", padx=20, pady=5, borderwidth=2, relief="ridge", bg='mistyrose', cursor='hand2', command=lambda client=result:removeClient(content, client)).grid(row=i, column=j+2, sticky="nsew")
         i = i + 1
 
 # show the new client screen
@@ -72,22 +72,36 @@ def addClient(content):
     telefone.grid(row=4, column=1, pady=3, padx=3, stick='nsew')
 
     def save():
+        # prepare the SQL Insert command
         server.cur.prepare("insert into CLIENTE(CODIGO, NATUREZA, EMAIL, TELEFONE) VALUES(:1, :2, :3, :4)")
 
+        # get data about the Client from the user
         cod = codigo.get()
         nat = natureza.get()
         em = email.get()
         tel = telefone.get()
 
+        # execute the command and commit the result
         server.cur.execute(None, {'1':cod, '2':nat, '3':em, '4':tel})
         server.con.commit()
+
+        showClient(content)
 
     # add the confirm button
     tk.Button(content, text="Concluir", command=save, relief=tk.RIDGE, pady=3, padx=50, bg='green', fg='white', font='Helvetica 11 bold', cursor='hand2').grid(row=5, column=0, columnspan=2, pady=5)
 
-def removeClient(client):
-    print(client)
-    # SQL PARA REMOVER AQUI
+def removeClient(content, client):
+    # prepare the SQL Delete command
+    server.cur.prepare("delete from CLIENTE where CODIGO = :1")
+
+    # get Client's code from the tuple
+    cod = client[0]
+
+    # execute the command and commit the result
+    server.cur.execute(None, {'1':cod})
+    server.con.commit()
+
+    showClient(content)
 
 def editClient(content, client):
     # clear the old content
@@ -121,12 +135,20 @@ def editClient(content, client):
     telefone.grid(row=4, column=1, pady=3, padx=3, stick='nsew')
 
     def save():
-        # SQL PARA SALVAR EDICOES AQUI
-        # LEMBRA DO COMMIT
-        print(codigo.get())
-        print(natureza.get())
-        print(email.get())
-        print(telefone.get())
+        # prepare the SQL Update command
+        server.cur.prepare("update CLIENTE set NATUREZA = :2, EMAIL = :3, TELEFONE = :4 where CODIGO = :1")
+
+        # get data about the Client from the user
+        cod = codigo.get()
+        nat = natureza.get()
+        em = email.get()
+        tel = telefone.get()
+
+        # execute the command and commit the result
+        server.cur.execute(None, {'1':cod, '2':nat, '3':em, '4':tel})
+        server.con.commit()
+
+        showClient(content)
 
     # add the confirm button
     tk.Button(content, text="Concluir", command=save, relief=tk.RIDGE, pady=3, padx=50, bg='green', fg='white', font='Helvetica 11 bold', cursor='hand2').grid(row=5, column=0, columnspan=2, pady=5)
