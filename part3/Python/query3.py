@@ -16,15 +16,15 @@ def showQuery3(content):
     clearContent(content)
 
     # add the title
-    tk.Label(content, text="Consulta 3", font='Helvetica 14').grid(row=0, stick='nsew')
+    tk.Label(content, text="Consulta 3", font='Helvetica 14').grid(row=0, stick='nsew', columnspan=3)
 
     # add explanation
-    tk.Label(content, text='Para cada tipo de funcionário, calcular a média salarial e a quantidade de empregados. Ordenar decrescentemente pela média salarial.', font='Helvetica 12').grid(row=1, column=0, sticky="nsew")
+    tk.Label(content, text='Para cada tipo de funcionário, calcular a média salarial e a quantidade de empregados. Ordenar decrescentemente pela média salarial.', font='Helvetica 12').grid(row=1, sticky="nsew", columnspan=3)
 
     # add 
     tk.Label(content, text="Cargo", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=0, sticky="nsew")
-    tk.Label(content, text="Salario_Medio", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=1, sticky="nsew")
-    tk.Label(content, text="Num_Empregados", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=2, sticky="nsew")
+    tk.Label(content, text="Salario Médio", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=1, sticky="nsew")
+    tk.Label(content, text="Num Empregados", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=2, sticky="nsew")
 
     # add the table content
     server.cur.execute(' \

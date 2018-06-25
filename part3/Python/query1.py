@@ -16,16 +16,16 @@ def showQuery1(content):
     clearContent(content)
 
     # add the title
-    tk.Label(content, text="Consulta 1", font='Helvetica 14').grid(row=0, stick='nsew')
+    tk.Label(content, text="Consulta 1", font='Helvetica 14').grid(row=0, stick='nsew', columnspan=4)
 
     # add explanation
-    tk.Label(content, text='Para cada cliente físico, mostrar o número de festas e o total gasto nos últimos cinco anos, ordenado decrescentemente pelo montante gasto.', font='Helvetica 12').grid(row=1, column=0, sticky="nsew")
+    tk.Label(content, text='Para cada cliente físico, mostrar o número de festas e o total gasto nos últimos cinco anos, ordenado decrescentemente pelo montante gasto.', font='Helvetica 12').grid(row=1, column=0, sticky="nsew", columnspan=4)
 
     # add 
     tk.Label(content, text="Nome", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=0, sticky="nsew")
     tk.Label(content, text="CPF", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=1, sticky="nsew")
-    tk.Label(content, text="Num_Festas", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=2, sticky="nsew")
-    tk.Label(content, text="Total_Festas", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=3, sticky="nsew")
+    tk.Label(content, text="Num Festas", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=2, sticky="nsew")
+    tk.Label(content, text="Total Festas", padx=20, pady=5, borderwidth=2, relief="ridge", bg='palegreen', font="Helvetica 11 bold").grid(row=2, column=3, sticky="nsew")
 
     # add the table content
     server.cur.execute(' SELECT F.NOME, F.CPF, COUNT(C.FESTA) AS NUM_FESTAS, SUM(C.PRECO) AS TOTAL_FESTAS \
